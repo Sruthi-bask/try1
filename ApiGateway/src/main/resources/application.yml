@@ -1,0 +1,19 @@
+server:
+  port: 8081   # Gateway runs on 8081
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        - id: audit-log-service
+          uri: lb://audit-log-service   # must match Eureka's serviceId (spring.application.name of Audit service)
+          predicates:
+            - Path=/audit/**            # Any request starting with /audit goes to Audit service
